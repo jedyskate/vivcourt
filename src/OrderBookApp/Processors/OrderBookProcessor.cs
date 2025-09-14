@@ -10,10 +10,12 @@ public class OrderBookProcessor
     private readonly Dictionary<string, Dictionary<long, Order>> _orderBooks = new();
     private readonly Dictionary<string, PriceDepth> _priceDepths = new();
     private readonly Dictionary<string, string> _lastSnapshots = new();
+    private readonly TextWriter _outputWriter;
 
-    public OrderBookProcessor(int n)
+    public OrderBookProcessor(int n, TextWriter? outputWriter = null)
     {
         _n = n;
+        _outputWriter = outputWriter ?? Console.Out;
     }
 
     public void ProcessStream(string inputFilePath)
@@ -159,7 +161,7 @@ public class OrderBookProcessor
 
         if (currentSnapshot == _lastSnapshots[symbol]) return;
         
-        Console.WriteLine(currentSnapshot);
+        _outputWriter.WriteLine(currentSnapshot);
         _lastSnapshots[symbol] = currentSnapshot;
     }
 }
