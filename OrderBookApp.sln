@@ -6,11 +6,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{ACF04D44
 		items\input2.stream = items\input2.stream
 		items\output1.log = items\output1.log
 		items\Programming Task_ Order Book Feed Processing.pdf = items\Programming Task_ Order Book Feed Processing.pdf
+		items\output2.log = items\output2.log
+		items\README.md = items\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2DCAA42B-6806-4359-82DF-BE8C09EAD85A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBookApp", "src\OrderBookApp\OrderBookApp.csproj", "{ABA18060-1361-4335-9A5C-73CC698F6100}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B7B3F428-C12C-4A3C-BC84-5D608857C7BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBookApp.UnitTests", "tests\OrderBookApp.UnitTests\OrderBookApp.UnitTests.csproj", "{ABD53F93-B6D8-4276-A73E-F1108390AE50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,8 +28,13 @@ Global
 		{ABA18060-1361-4335-9A5C-73CC698F6100}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABA18060-1361-4335-9A5C-73CC698F6100}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABA18060-1361-4335-9A5C-73CC698F6100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABD53F93-B6D8-4276-A73E-F1108390AE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABD53F93-B6D8-4276-A73E-F1108390AE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABD53F93-B6D8-4276-A73E-F1108390AE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABD53F93-B6D8-4276-A73E-F1108390AE50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ABA18060-1361-4335-9A5C-73CC698F6100} = {2DCAA42B-6806-4359-82DF-BE8C09EAD85A}
+		{ABD53F93-B6D8-4276-A73E-F1108390AE50} = {B7B3F428-C12C-4A3C-BC84-5D608857C7BB}
 	EndGlobalSection
 EndGlobal
