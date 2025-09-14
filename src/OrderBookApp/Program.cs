@@ -6,6 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        // var inputPath = Path.Combine(direc Context.TestDirectory, "..", "..", "..", "..", "..", "items", "input1.stream");
         args = ["C:\\Users\\jedyp\\Repos\\1. Code Challanges\\vivcourt\\items\\input1.stream", "5"];
 
         if (args.Length != 2)

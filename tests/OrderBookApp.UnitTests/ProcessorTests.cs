@@ -13,8 +13,8 @@ public class ProcessorTests
         // Arrange
         var stringWriter = new StringWriter();
         var processor = new OrderBookProcessor(5, stringWriter);
-        var inputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "items", "input1.stream");
-        var expectedOutputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "items", "output1.log");
+        var inputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", "input1.stream");
+        var expectedOutputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", "output1.log");
         
         var expectedOutputBuilder = new StringBuilder();
         using (var reader = new StreamReader(expectedOutputPath))

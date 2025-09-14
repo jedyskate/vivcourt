@@ -71,7 +71,7 @@ public class OrderBookProcessor
     private bool HandleAddOrder(BinaryReader reader, string symbol)
     {
         var addedOrderId = reader.ReadInt64();
-        reader.ReadChar();
+        var side = reader.ReadChar();
         reader.ReadBytes(3); // Reserved
         var addedSize = reader.ReadInt64();
         var addedPrice = reader.ReadInt32();
@@ -80,7 +80,7 @@ public class OrderBookProcessor
         var newOrder = new Order
         {
             OrderId = addedOrderId,
-            Side = 'B',
+            Side = side,
             Symbol = symbol,
             Size = addedSize,
             Price = addedPrice
