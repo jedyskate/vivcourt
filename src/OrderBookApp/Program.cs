@@ -151,7 +151,7 @@ class Program
 
     static void Main(string[] args)
     {
-        args = ["items/input1.stream", "5"];
+        args = ["../items/input1.stream", "5"];
             
         if (args.Length != 2)
         {
