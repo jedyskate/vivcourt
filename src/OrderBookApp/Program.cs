@@ -15,8 +15,8 @@ public class Order
 // Represents the price depth for a specific symbol.
 public class PriceDepth
 {
-    public Dictionary<int, long> Bids { get; set; } = new Dictionary<int, long>();
-    public Dictionary<int, long> Asks { get; set; } = new Dictionary<int, long>();
+    public Dictionary<int, long> Bids { get; set; } = new();
+    public Dictionary<int, long> Asks { get; set; } = new();
 
     public void AddOrder(Order order)
     {
@@ -145,11 +145,9 @@ public class PriceDepth
 
 class Program
 {
-    private static Dictionary<string, Dictionary<long, Order>> orderBooks =
-        new Dictionary<string, Dictionary<long, Order>>();
-
-    private static Dictionary<string, PriceDepth> priceDepths = new Dictionary<string, PriceDepth>();
-    private static Dictionary<string, string> lastSnapshots = new Dictionary<string, string>();
+    private static Dictionary<string, Dictionary<long, Order>> _orderBooks = new();
+    private static Dictionary<string, PriceDepth> _priceDepths = new();
+    private static Dictionary<string, string> _lastSnapshots = new();
 
     static void Main(string[] args)
     {
@@ -184,15 +182,15 @@ class Program
 
                     string symbol = Encoding.ASCII.GetString(reader.ReadBytes(3)).Trim();
 
-                    if (!orderBooks.ContainsKey(symbol))
+                    if (!_orderBooks.ContainsKey(symbol))
                     {
-                        orderBooks[symbol] = new Dictionary<long, Order>();
-                        priceDepths[symbol] = new PriceDepth();
-                        lastSnapshots[symbol] = "";
+                        _orderBooks[symbol] = new Dictionary<long, Order>();
+                        _priceDepths[symbol] = new PriceDepth();
+                        _lastSnapshots[symbol] = "";
                     }
 
-                    var orderBook = orderBooks[symbol];
-                    var priceDepth = priceDepths[symbol];
+                    var orderBook = _orderBooks[symbol];
+                    var priceDepth = _priceDepths[symbol];
 
                     bool changed = false;
 
@@ -289,14 +287,14 @@ class Program
                     if (changed)
                     {
                         var sortedBids = priceDepth.Bids.OrderByDescending(p => p.Key).Take(N).ToList();
-                        var sortedAsks = priceDepths[symbol].Asks.OrderBy(p => p.Key).Take(N).ToList();
+                        var sortedAsks = _priceDepths[symbol].Asks.OrderBy(p => p.Key).Take(N).ToList();
 
                         string currentSnapshot = FormatSnapshot(sequenceNo, symbol, sortedBids, sortedAsks);
 
-                        if (currentSnapshot != lastSnapshots[symbol])
+                        if (currentSnapshot != _lastSnapshots[symbol])
                         {
                             Console.WriteLine(currentSnapshot);
-                            lastSnapshots[symbol] = currentSnapshot;
+                            _lastSnapshots[symbol] = currentSnapshot;
                         }
                     }
 
