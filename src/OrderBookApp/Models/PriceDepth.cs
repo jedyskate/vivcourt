@@ -5,8 +5,8 @@ namespace OrderBookApp.Models;
 // Represents the price depth for a specific symbol.
 public class PriceDepth
 {
-    public Dictionary<int, long> Bids { get; set; } = new();
-    public Dictionary<int, long> Asks { get; set; } = new();
+    public SortedDictionary<int, long> Bids { get; set; } = new();
+    public SortedDictionary<int, long> Asks { get; set; } = new();
 
     public void AddOrder(Order order)
     {

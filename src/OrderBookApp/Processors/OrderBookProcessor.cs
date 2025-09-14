@@ -9,18 +9,18 @@ public class OrderBookProcessor
     private readonly int _n;
     private readonly Dictionary<string, Dictionary<long, Order>> _orderBooks = new();
     private readonly Dictionary<string, PriceDepth> _priceDepths = new();
-    private readonly Dictionary<string, string> _lastSnapshots = new();
-    private readonly TextWriter _outputWriter = new StringWriter();
+    private readonly Dictionary<string, (List<KeyValuePair<int, long>> Bids, List<KeyValuePair<int, long>> Asks)> _lastSnapshots = new();
+    private readonly TextWriter _outputWriter;
 
-    public OrderBookProcessor(int n)
+    public OrderBookProcessor(int n, TextWriter outputWriter)
     {
         _n = n;
+        _outputWriter = outputWriter;
     }
 
-    public TextWriter ProcessStream(string inputFilePath)
+    public void ProcessStream(Stream stream)
     {
-        using var fs = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
-        using var reader = new BinaryReader(fs);
+        using var reader = new BinaryReader(stream);
 
         while (reader.BaseStream.Position < reader.BaseStream.Length)
         {
@@ -34,8 +34,6 @@ public class OrderBookProcessor
             // Ensure the reader is at the start of the next message
             reader.BaseStream.Seek(messageStart + messageSize, SeekOrigin.Begin);
         }
-        
-        return _outputWriter;
     }
 
     private void ProcessMessage(BinaryReader reader, int sequenceNo)
@@ -66,7 +64,7 @@ public class OrderBookProcessor
         
         _orderBooks[symbol] = new Dictionary<long, Order>();
         _priceDepths[symbol] = new PriceDepth();
-        _lastSnapshots[symbol] = "";
+        _lastSnapshots[symbol] = (new List<KeyValuePair<int, long>>(), new List<KeyValuePair<int, long>>());
     }
 
     private bool HandleAddOrder(BinaryReader reader, string symbol)
@@ -155,14 +153,18 @@ public class OrderBookProcessor
     private void PrintSnapshotIfChanged(int sequenceNo, string symbol)
     {
         var priceDepth = _priceDepths[symbol];
-        var sortedBids = priceDepth.Bids.OrderByDescending(p => p.Key).Take(_n).ToList();
-        var sortedAsks = priceDepth.Asks.OrderBy(p => p.Key).Take(_n).ToList();
+        var topBids = priceDepth.Bids.Reverse().Take(_n).ToList();
+        var topAsks = priceDepth.Asks.Take(_n).ToList();
 
-        var currentSnapshot = SnapshotExtensions.FormatSnapshot(sequenceNo, symbol, sortedBids, sortedAsks);
+        var lastSnapshot = _lastSnapshots[symbol];
+        if (lastSnapshot.Bids.SequenceEqual(topBids) && lastSnapshot.Asks.SequenceEqual(topAsks))
+        {
+            return;
+        }
 
-        if (currentSnapshot == _lastSnapshots[symbol]) return;
+        var currentSnapshot = SnapshotExtensions.FormatSnapshot(sequenceNo, symbol, topBids, topAsks);
         
         _outputWriter.WriteLine(currentSnapshot);
-        _lastSnapshots[symbol] = currentSnapshot;
+        _lastSnapshots[symbol] = (topBids, topAsks);
     }
 }

@@ -13,7 +13,8 @@ public class ProcessorTests
     public async Task Processor_Should_Produce_Correct_Output_From_Stream(string inputStreamFile, string outputLogFile)
     {
         // Arrange
-        var processor = new OrderBookProcessor(5);
+        await using var stringWriter = new StringWriter();
+        var processor = new OrderBookProcessor(5, stringWriter);
         var inputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", inputStreamFile);
         var expectedOutputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", outputLogFile);
         
@@ -28,9 +29,11 @@ public class ProcessorTests
         var expectedOutput = expectedOutputBuilder.ToString();
 
         // Act
-        var actualOutput = processor.ProcessStream(inputPath);
+        await using var fileStream = new FileStream(inputPath, FileMode.Open, FileAccess.Read);
+        processor.ProcessStream(fileStream);
+        var actualOutput = stringWriter.ToString();
 
         // Assert
-        actualOutput.ToString().ShouldBe(expectedOutput);
+        actualOutput.ShouldBe(expectedOutput);
     }
 }
