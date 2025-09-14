@@ -6,9 +6,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        // var inputPath = Path.Combine(direc Context.TestDirectory, "..", "..", "..", "..", "..", "items", "input1.stream");
-        args = ["C:\\Users\\jedyp\\Repos\\1. Code Challanges\\vivcourt\\items\\input1.stream", "5"];
-
+#if DEBUG
+        var inputPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "..", "items", "input1.stream");
+        args = [inputPath, "5"];
+#endif
+        
         if (args.Length != 2)
         {
             Console.WriteLine("Usage: OrderBookProcessor.exe <input_file_path> <N>");

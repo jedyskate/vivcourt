@@ -10,15 +10,14 @@ public class OrderBookProcessor
     private readonly Dictionary<string, Dictionary<long, Order>> _orderBooks = new();
     private readonly Dictionary<string, PriceDepth> _priceDepths = new();
     private readonly Dictionary<string, string> _lastSnapshots = new();
-    private readonly TextWriter _outputWriter;
+    private readonly TextWriter _outputWriter = new StringWriter();
 
-    public OrderBookProcessor(int n, TextWriter? outputWriter = null)
+    public OrderBookProcessor(int n)
     {
         _n = n;
-        _outputWriter = outputWriter ?? Console.Out;
     }
 
-    public void ProcessStream(string inputFilePath)
+    public TextWriter ProcessStream(string inputFilePath)
     {
         using var fs = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
         using var reader = new BinaryReader(fs);
@@ -35,6 +34,8 @@ public class OrderBookProcessor
             // Ensure the reader is at the start of the next message
             reader.BaseStream.Seek(messageStart + messageSize, SeekOrigin.Begin);
         }
+        
+        return _outputWriter;
     }
 
     private void ProcessMessage(BinaryReader reader, int sequenceNo)

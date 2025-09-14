@@ -8,13 +8,14 @@ namespace OrderBookApp.UnitTests;
 public class ProcessorTests
 {
     [Test]
-    public async Task Processor_Should_Produce_Correct_Output_From_Stream()
+    [TestCase("input1.stream", "output1.log")]
+    [TestCase("input2.stream", "output2.log")]
+    public async Task Processor_Should_Produce_Correct_Output_From_Stream(string inputStreamFile, string outputLogFile)
     {
         // Arrange
-        var stringWriter = new StringWriter();
-        var processor = new OrderBookProcessor(5, stringWriter);
-        var inputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", "input1.stream");
-        var expectedOutputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", "output1.log");
+        var processor = new OrderBookProcessor(5);
+        var inputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", inputStreamFile);
+        var expectedOutputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "items", outputLogFile);
         
         var expectedOutputBuilder = new StringBuilder();
         using (var reader = new StreamReader(expectedOutputPath))
@@ -27,10 +28,9 @@ public class ProcessorTests
         var expectedOutput = expectedOutputBuilder.ToString();
 
         // Act
-        processor.ProcessStream(inputPath);
-        var actualOutput = stringWriter.ToString();
+        var actualOutput = processor.ProcessStream(inputPath);
 
         // Assert
-        actualOutput.ShouldBe(expectedOutput);
+        actualOutput.ToString().ShouldBe(expectedOutput);
     }
 }
