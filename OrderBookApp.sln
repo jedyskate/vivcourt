@@ -1,6 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBookApp", "OrderBookApp\OrderBookApp.csproj", "{6F7584E6-E74D-401C-8F64-1072C8F51CED}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{ACF04D44-364E-4279-8517-886D7BC7FFB4}"
+	ProjectSection(SolutionItems) = preProject
+		input1.stream = input1.stream
+		input2.stream = input2.stream
+		output1.log = output1.log
+		Programming Task_ Order Book Feed Processing.pdf = Programming Task_ Order Book Feed Processing.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2DCAA42B-6806-4359-82DF-BE8C09EAD85A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBookApp", "src\OrderBookApp\OrderBookApp.csproj", "{ABA18060-1361-4335-9A5C-73CC698F6100}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +18,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F7584E6-E74D-401C-8F64-1072C8F51CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F7584E6-E74D-401C-8F64-1072C8F51CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F7584E6-E74D-401C-8F64-1072C8F51CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F7584E6-E74D-401C-8F64-1072C8F51CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA18060-1361-4335-9A5C-73CC698F6100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA18060-1361-4335-9A5C-73CC698F6100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA18060-1361-4335-9A5C-73CC698F6100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA18060-1361-4335-9A5C-73CC698F6100}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ABA18060-1361-4335-9A5C-73CC698F6100} = {2DCAA42B-6806-4359-82DF-BE8C09EAD85A}
 	EndGlobalSection
 EndGlobal

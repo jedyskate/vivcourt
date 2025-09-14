@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace OrderBookApp;
 
@@ -9,14 +9,14 @@ public class Order
     public char Side { get; set; } // 'B' for Bid, 'S' for Ask
     public string Symbol { get; set; }
     public long Size { get; set; }
-    public decimal Price { get; set; }
+    public int Price { get; set; }
 }
 
 // Represents the price depth for a specific symbol.
 public class PriceDepth
 {
-    public Dictionary<decimal, long> Bids { get; set; } = new Dictionary<decimal, long>();
-    public Dictionary<decimal, long> Asks { get; set; } = new Dictionary<decimal, long>();
+    public Dictionary<int, long> Bids { get; set; } = new Dictionary<int, long>();
+    public Dictionary<int, long> Asks { get; set; } = new Dictionary<int, long>();
 
     public void AddOrder(Order order)
     {
@@ -44,7 +44,7 @@ public class PriceDepth
         }
     }
 
-    public void UpdateOrder(Order updatedOrder, long oldSize, decimal oldPrice)
+    public void UpdateOrder(Order updatedOrder, long oldSize, int oldPrice)
     {
         if (updatedOrder.Side == 'B')
         {
@@ -151,7 +151,7 @@ class Program
 
     static void Main(string[] args)
     {
-        args = ["items/input2.stream", "5"];
+        args = ["items/input1.stream", "5"];
             
         if (args.Length != 2)
         {
@@ -204,7 +204,7 @@ class Program
                             int addedPriceRaw = reader.ReadInt32();
                             reader.ReadBytes(4); // Reserved
 
-                            decimal addedPrice = (decimal)addedPriceRaw / 10000.0m;
+                            int addedPrice = addedPriceRaw;
 
                             var newOrder = new Order
                             {
@@ -228,13 +228,13 @@ class Program
                             int updatedPriceRaw = reader.ReadInt32();
                             reader.ReadBytes(4); // Reserved
 
-                            decimal updatedPrice = (decimal)updatedPriceRaw / 10000.0m;
+                            int updatedPrice = updatedPriceRaw;
 
                             if (orderBook.ContainsKey(updatedOrderId))
                             {
                                 var oldOrder = orderBook[updatedOrderId];
                                 long oldSize = oldOrder.Size;
-                                decimal oldPrice = oldOrder.Price;
+                                int oldPrice = oldOrder.Price;
 
                                 oldOrder.Size = updatedSize;
                                 oldOrder.Price = updatedPrice;
@@ -283,7 +283,7 @@ class Program
                     if (changed)
                     {
                         var sortedBids = priceDepth.Bids.OrderByDescending(p => p.Key).Take(N).ToList();
-                        var sortedAsks = priceDepth.Asks.OrderBy(p => p.Key).Take(N).ToList();
+                        var sortedAsks = priceDepths[symbol].Asks.OrderBy(p => p.Key).Take(N).ToList();
 
                         string currentSnapshot = FormatSnapshot(sequenceNo, symbol, sortedBids, sortedAsks);
 
@@ -295,7 +295,7 @@ class Program
                     }
 
                     // Ensure the reader is at the start of the next message
-                    reader.BaseStream.Seek(messageStart + messageSize - 1, SeekOrigin.Begin);
+                    reader.BaseStream.Seek(messageStart + messageSize, SeekOrigin.Begin);
                 }
             }
         }
@@ -306,10 +306,10 @@ class Program
         }
     }
 
-    private static string FormatSnapshot(int sequenceNo, string symbol, List<KeyValuePair<decimal, long>> bids, List<KeyValuePair<decimal, long>> asks)
+    private static string FormatSnapshot(int sequenceNo, string symbol, List<KeyValuePair<int, long>> bids, List<KeyValuePair<int, long>> asks)
     {
-        var bidStrings = bids.Select(b => $"({b.Key.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture)}, {b.Value})");
-        var askStrings = asks.Select(a => $"({a.Key.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture)}, {a.Value})");
+        var bidStrings = bids.Select(b => $"({b.Key}, {b.Value})");
+        var askStrings = asks.Select(a => $"({a.Key}, {a.Value})");
 
         string bidsFormatted = string.Join(", ", bidStrings);
         string asksFormatted = string.Join(", ", askStrings);
