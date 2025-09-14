@@ -145,20 +145,22 @@ public class PriceDepth
 
 class Program
 {
-    private static Dictionary<string, Dictionary<long, Order>> orderBooks = new Dictionary<string, Dictionary<long, Order>>();
+    private static Dictionary<string, Dictionary<long, Order>> orderBooks =
+        new Dictionary<string, Dictionary<long, Order>>();
+
     private static Dictionary<string, PriceDepth> priceDepths = new Dictionary<string, PriceDepth>();
     private static Dictionary<string, string> lastSnapshots = new Dictionary<string, string>();
 
     static void Main(string[] args)
     {
-        args = ["../items/input1.stream", "5"];
-            
+        args = ["C:\\Users\\jedyp\\Repos\\1. Code Challanges\\vivcourt\\items\\input1.stream", "5"];
+
         if (args.Length != 2)
         {
             Console.WriteLine("Usage: OrderBookProcessor.exe <input_file_path> <N>");
             return;
         }
-                
+
         string inputFilePath = args[0];
         if (!int.TryParse(args[1], out int N))
         {
@@ -242,6 +244,7 @@ class Program
                                 priceDepth.UpdateOrder(oldOrder, oldSize, oldPrice);
                                 changed = true;
                             }
+
                             break;
 
                         case 'D': // Order Deleted
@@ -256,6 +259,7 @@ class Program
                                 orderBook.Remove(deletedOrderId);
                                 changed = true;
                             }
+
                             break;
 
                         case 'E': // Order Executed
@@ -274,8 +278,10 @@ class Program
                                 {
                                     orderBook.Remove(executedOrderId);
                                 }
+
                                 changed = true;
                             }
+
                             break;
                     }
 
@@ -306,7 +312,8 @@ class Program
         }
     }
 
-    private static string FormatSnapshot(int sequenceNo, string symbol, List<KeyValuePair<int, long>> bids, List<KeyValuePair<int, long>> asks)
+    private static string FormatSnapshot(int sequenceNo, string symbol, List<KeyValuePair<int, long>> bids,
+        List<KeyValuePair<int, long>> asks)
     {
         var bidStrings = bids.Select(b => $"({b.Key}, {b.Value})");
         var askStrings = asks.Select(a => $"({a.Key}, {a.Value})");
