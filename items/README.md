@@ -6,7 +6,6 @@ This application processes a binary stream of order book messages and generates 
 
 The application can process data from a file or from standard input (`stdin`).
 
-### From File
 
 ```shell
   dotnet run --project src/OrderBookApp/OrderBookApp.csproj -- <input_file_path> <N>
@@ -18,17 +17,7 @@ The application can process data from a file or from standard input (`stdin`).
 ```shell
   dotnet run --project src/OrderBookApp/OrderBookApp.csproj -- items/input1.stream 5
 ```
-
-### From Standard Input
-
-```shell
-  cat <input_file_path> | dotnet run --project src/OrderBookApp/OrderBookApp.csproj -- <N>
-```
-
-**Example:**
-```shell
-  cat items/input1.stream | dotnet run --project src/OrderBookApp/OrderBookApp.csproj -- 5
-```
+![Test image.png](Test%20image.png)
 
 ## Build
 

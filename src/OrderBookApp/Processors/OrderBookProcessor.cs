@@ -6,15 +6,15 @@ namespace OrderBookApp.Processors;
 
 public class OrderBookProcessor
 {
-    private readonly int _n;
+    private readonly int _priceDepth;
     private readonly Dictionary<string, Dictionary<long, Order>> _orderBooks = new();
     private readonly Dictionary<string, PriceDepth> _priceDepths = new();
     private readonly Dictionary<string, (List<KeyValuePair<int, long>> Bids, List<KeyValuePair<int, long>> Asks)> _lastSnapshots = new();
     private readonly TextWriter _outputWriter;
 
-    public OrderBookProcessor(int n, TextWriter outputWriter)
+    public OrderBookProcessor(int priceDepth, TextWriter outputWriter)
     {
-        _n = n;
+        _priceDepth = priceDepth;
         _outputWriter = outputWriter;
     }
 
@@ -153,8 +153,8 @@ public class OrderBookProcessor
     private void PrintSnapshotIfChanged(int sequenceNo, string symbol)
     {
         var priceDepth = _priceDepths[symbol];
-        var topBids = priceDepth.Bids.Reverse().Take(_n).ToList();
-        var topAsks = priceDepth.Asks.Take(_n).ToList();
+        var topBids = priceDepth.Bids.Reverse().Take(_priceDepth).ToList();
+        var topAsks = priceDepth.Asks.Take(_priceDepth).ToList();
 
         var lastSnapshot = _lastSnapshots[symbol];
         if (lastSnapshot.Bids.SequenceEqual(topBids) && lastSnapshot.Asks.SequenceEqual(topAsks))

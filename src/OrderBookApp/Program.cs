@@ -6,10 +6,12 @@ class Program
 {
     static void Main(string[] args)
     {
-#if DEBUG
-        var inputPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "..", "items", "input1.stream");
-        args = [inputPath, "5"];
-#endif
+
+//TODO::REMOVE LATTER, COMMENTED OUT FOR REVIEW
+// #if DEBUG
+//         var inputPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "..", "items", "input1.stream");
+//         args = [inputPath, "5"];
+// #endif
 
         try
         {
@@ -20,14 +22,14 @@ class Program
             }
 
             var inputFilePath = args[0];
-            if (!int.TryParse(args[1], out var n))
+            if (!int.TryParse(args[1], out var priceDepth))
             {
-                Console.WriteLine("Invalid value for N. Please provide an integer.");
+                Console.WriteLine("Invalid value for Price Depth. Please provide an integer.");
                 return;
             }
                 
             using var fileStream = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
-            var processor = new OrderBookProcessor(n, Console.Out);
+            var processor = new OrderBookProcessor(priceDepth, Console.Out);
             processor.ProcessStream(fileStream);
         }
         catch (Exception ex)
